@@ -1,0 +1,62 @@
+version: '3.9'
+
+services:
+  db:
+    image: mariadb
+    container_name: db
+    build: requirements/mariadb/
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress
+    container_name: wordpress
+    build: requirements/wordpress/
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - app-network
+
+  nginx:
+    depends_on:
+      - wordpress
+    image: nginx
+    container_name: nginx
+    build: requirements/nginx/
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress:/var/www/html
+    networks:
+      - app-network
+
+volumes:
+    wordpress:
+        driver: local
+        name: wordpress
+        driver_opts:
+            type: none
+            o: bind
+            device: "/home/melaena/data/wordpress"
+    dbdata:
+        driver: local
+        name: dbdata
+        driver_opts:
+            type: none
+            o: bind
+            device: "/home/melaena/data/dbdata"
+
+networks:
+  app-network:
+    name: app-network
+    driver: bridge
