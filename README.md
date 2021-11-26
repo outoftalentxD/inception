@@ -18,4 +18,8 @@
   - A volume that contains your WordPress database.
   - A second volume that contains your WordPress website files.
   - A docker-network that establishes the connection between your containers.
+  
+  ####Representation of application structure:
+  ![](srcs/images/appStructure.jpg)
+  
 
