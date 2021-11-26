@@ -23,4 +23,10 @@
   
   ![](srcs/images/appStructure.jpg)
   
-
+  
+  Usage
+  -----------
+  To build and run application use:
+  ```
+  make build
+  ```
